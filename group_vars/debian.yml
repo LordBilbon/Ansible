@@ -1,0 +1,2 @@
+apache_paquet: apache2
+apache_config_file: /etc/apache2/ports.conf

@@ -1,0 +1,25 @@
+{# Commentaire Jinja #}
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ inventory_hostname }} Site Web</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <h2>Accueil du site {{ inventory_hostname }}</h2>
+
+    {% if ansible_distribution|lower in ('debian','ubuntu') %}
+    Distribution de type Debian
+    {% elif ansible_distribution|lower in ('centos','redhat') %}
+    Distribution de type Redhat
+    {% endif %}
+
+    /nAdresses IP:
+    <ul>
+    {% for ip in ansible_all_ipv4_addresses %}
+    <li>{{ ip }}</li>
+    {% endfor %}
+    </ul>
+
+  </body>
+</html>

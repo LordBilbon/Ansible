@@ -1,0 +1,50 @@
+---
+- name: Install et conf Apache2
+  hosts: linux
+  become: yes
+
+  tasks:
+  - name: Install apache2
+    package:
+      name: "{{ apache_paquet }}"
+      state: latest
+
+  - name: Configuration du service
+    systemd:
+      name: "{{ apache_paquet }}"
+      state: started
+      enabled: yes
+
+  - name: modifier le port d'écoute
+    lineinfile:
+      path: "{{ apache_config_file }}"
+      regex: ^Listen
+      line: Listen "{{ apache_port }}"
+    notify: reload_apache
+
+  - name: Desactivation du service firewall (sur centos)
+    systemd:
+      name: firewalld
+      state: stopped
+      enabled: no
+    when: ansible_distribution|lower == 'centos'
+
+#  - name: Copie du fichier index.html
+#    template:
+#      src: files/index.html
+#      dest: /var/www/html
+
+  - name: Copie de index.html
+    template:
+      src: templates/index.html.j2
+      dest: "/var/www/html/index.html"
+
+  - meta: flush_handlers
+
+  - name: Tâche en plus
+    debug:
+      msg: Coucou
+
+  handlers:
+  - name: importation des handlers
+    import_tasks: handlers.yml

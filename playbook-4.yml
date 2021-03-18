@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - group_vars/logins.yml
+
+  tasks:
+  - name: Create Group
+    group:
+      name: "{{ item.1 }}"
+      state: present
+    loop: "{{ logins | subelements('groups') }}"
+
+  - name: création des utilisateurs
+    user:
+      name: "{{ item.0.name }}"
+      uid: "{{ item.0.uid }}"
+      shell: "{{ item.0.shell }}"
+      home: "{{ item.0.home }}"
+      groups: "{{ item.1 }}"
+    loop: "{{ logins | subelements('groups')}}"

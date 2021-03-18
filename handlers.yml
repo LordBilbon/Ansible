@@ -1,0 +1,6 @@
+---
+  - name: Relancer le service apache2
+    systemd:
+      name: "{{ apache_paquet }}"
+      state: reloaded
+    listen: reload_apache

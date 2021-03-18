@@ -1,0 +1,9 @@
+[debian]
+debian-serv
+
+[centos]
+centos-serv
+
+[linux:children]
+debian
+centos

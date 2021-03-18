@@ -1,0 +1,17 @@
+---
+- name: Module LineInFile
+  hosts: linux
+  become: yes
+
+  vars_prompt:
+  - name: "line"
+    prompt: "Que voulez vous ajoutez ?"
+    private: no
+
+  tasks:
+  - name: Ajout d'une entrée dans le fichier /tmp/data.txt
+    lineinfile:
+      path: /tmp/data.txt
+#      regex: ansible-main$
+#      line: 172.16.0.38 ansible-main
+      line: "{{ line }}"

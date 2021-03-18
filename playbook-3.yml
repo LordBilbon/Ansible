@@ -1,0 +1,15 @@
+---
+- name: Module Copy
+  hosts: linux
+  become: yes
+
+  vars_prompt:
+  - name: "file"
+    prompt: "Nom du fichier"
+    private: no
+
+  tasks:
+  - name: Copie du fichier data.txt dans /tmp
+    copy:
+      src: "{{ file }}"
+      dest: /tmp
